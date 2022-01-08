@@ -4,5 +4,6 @@ class TelaSistema:
         print("O que você deseja fazer?")
         print("[1] Entrar no sistema")
         print("[2] Fechar o sistema")
+        print("---------------------------------------")
         opcao = int(input())
         return opcao
