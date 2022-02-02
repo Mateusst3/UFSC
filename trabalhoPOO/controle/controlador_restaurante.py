@@ -2,6 +2,7 @@ from entidade.entidade_restaurante import Restaurante
 from limite.tela_restaurantes import TelaRestaurantes
 from entidade.entidade_produto import Produto
 from limite.tela_produtos import TelaProdutos
+from controle.controlador_carrinho import ControladorCarrinho
 
 
 class ControladorRestaurante:
@@ -11,6 +12,8 @@ class ControladorRestaurante:
         self.__restaurantes = []
         self.__controlador_restaurante = controlador_restaurante
         self.__tela_produtos = TelaProdutos
+        self.__carrinho = ControladorCarrinho(self)
+
 
     def cadastro_restaurante(self):
         nome_restaurante = self.__tela_restaurante.cadastra_restaurante(self)
@@ -49,3 +52,6 @@ class ControladorRestaurante:
 
         else:
             self.__tela_restaurante.sem_restaurante_cadastrado()
+
+    def adiciona_produto_carrinho(self):
+        self.__carrinho.adiciona_produto(self.__restaurantes)

@@ -1,7 +1,6 @@
 from limite.tela_menu import TelaMenu
 from controle.controlador_restaurante import ControladorRestaurante
 
-
 class ControladorMenu:
 
     def __init__(self, controlador_sistema):
@@ -30,9 +29,13 @@ class ControladorMenu:
     def lista_produtos(self):
         self.__controlador_restaurante.lista_produtos_restaurantes()
 
+    def adiciona_carrinho(self):
+        self.__controlador_restaurante.adiciona_produto_carrinho()
+
     def abrir_tela(self):
         opcoes_sistema = {1: self.cadastrar_restaurante, 2: self.exclui_restaurante, 3: self.lista_restaurantes,
-                          4: self.cadastra_produto, 5: self.lista_produtos, 6: self.fecha_sistema}
+                          4: self.cadastra_produto, 5: self.lista_produtos, 6: self.adiciona_carrinho,
+                          7: self.fecha_sistema}
 
         continua = True
         while continua:
