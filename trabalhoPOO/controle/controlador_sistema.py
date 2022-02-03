@@ -8,7 +8,6 @@ class ControladorSistema:
         self.__tela_sistema = TelaSistema()
         self.__controlador_menu = ControladorMenu(self)
 
-
     def inicializa_sistema(self):
         self.abrir_tela()
 
@@ -19,9 +18,9 @@ class ControladorSistema:
         self.__controlador_menu.abrir_tela()
 
     def abrir_tela(self):
-        lista_opcoes ={ 1: self.abre_menu, 2:self.fechar_sistema}
+        lista_opcoes = {1: self.abre_menu, 2: self.fechar_sistema}
 
         while True:
             opcao_escolhida = self.__tela_sistema.tela_sistema()
-            funcao_escolhida =lista_opcoes[opcao_escolhida]
+            funcao_escolhida = lista_opcoes[opcao_escolhida]
             funcao_escolhida()

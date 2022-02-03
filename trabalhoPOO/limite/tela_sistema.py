@@ -5,5 +5,5 @@ class TelaSistema:
         print("[1] Entrar no sistema")
         print("[2] Fechar o sistema")
         print("---------------------------------------")
-        opcao = int(input())
+        opcao = int(input('Escolha: '))
         return opcao

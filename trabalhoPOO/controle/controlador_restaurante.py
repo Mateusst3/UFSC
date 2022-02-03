@@ -54,4 +54,5 @@ class ControladorRestaurante:
             self.__tela_restaurante.sem_restaurante_cadastrado()
 
     def adiciona_produto_carrinho(self):
-        self.__carrinho.adiciona_produto(self.__restaurantes)
+        carrinho_fechado = self.__carrinho.adiciona_ao_carrinho(self.__restaurantes)
+        print(carrinho_fechado)
