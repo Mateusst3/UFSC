@@ -12,7 +12,8 @@ class ControladorRestaurante:
         self.__restaurantes = []
         self.__controlador_restaurante = controlador_restaurante
         self.__tela_produtos = TelaProdutos
-        self.__carrinho = ControladorCarrinho(self)
+        self.__carrinho_controlador = ControladorCarrinho(self)
+        self.__carrinho_fechado = []
 
 
     def cadastro_restaurante(self):
@@ -54,5 +55,8 @@ class ControladorRestaurante:
             self.__tela_restaurante.sem_restaurante_cadastrado()
 
     def adiciona_produto_carrinho(self):
-        carrinho_fechado = self.__carrinho.adiciona_ao_carrinho(self.__restaurantes)
-        print(carrinho_fechado)
+        self.__carrinho_fechado = self.__carrinho_controlador.adiciona_ao_carrinho(self.__restaurantes)
+
+    def fechar_compra(self):
+        self.__carrinho_controlador.fechar_compra(self.__carrinho_fechado)
+

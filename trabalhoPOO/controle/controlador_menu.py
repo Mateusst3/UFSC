@@ -32,10 +32,13 @@ class ControladorMenu:
     def adiciona_carrinho(self):
         self.__controlador_restaurante.adiciona_produto_carrinho()
 
+    def fechar_compra(self):
+        self.__controlador_restaurante.fechar_compra()
+
     def abrir_tela(self):
         opcoes_sistema = {1: self.cadastrar_restaurante, 2: self.exclui_restaurante, 3: self.lista_restaurantes,
                           4: self.cadastra_produto, 5: self.lista_produtos, 6: self.adiciona_carrinho,
-                          7: self.fecha_sistema}
+                          7: self.fechar_compra, 8: self.fecha_sistema}
 
         continua = True
         while continua:

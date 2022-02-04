@@ -9,7 +9,8 @@ class TelaMenu:
         print("[4] Cadastrar produtos")
         print("[5] Lista produtos")
         print("[6] Comprar produtos")
-        print("[7] Fechar o sistema")
+        print("[7] Fechar compra")
+        print("[8] Fechar o sistema")
         print("-----------------------------------")
         opcoes = int(input("escolha: "))
         return opcoes

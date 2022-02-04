@@ -10,7 +10,7 @@ class ControladorCarrinho:
         self.__tela_carrinho = TelaCarrinho
 
     def adiciona_produto(self, restaurantes):
-        self.__tela_carrinho.opcoes(self)
+        self.__tela_carrinho.opcoes__(self)
         x = 1
         for restaurante in restaurantes:
             self.__tela_carrinho.mostra_restaurantes_produtos(self, '[' + str(x) + '] ' + restaurante.get_nome())
@@ -19,7 +19,7 @@ class ControladorCarrinho:
                                                                   ' , preço: ' + str(produto.get_preco()))
             x += 1
         opcao = self.__tela_carrinho.escolhe_restaurante(self)
-        self.__tela_carrinho.opcoes(self)
+        self.__tela_carrinho.opcoes__(self)
         produtos_restaurante_escolhido = restaurantes[opcao - 1].get_produtos()
         y = 1
         for produto in produtos_restaurante_escolhido:
@@ -35,10 +35,34 @@ class ControladorCarrinho:
     def adiciona_ao_carrinho(self, restaurantes):
         adicionando = True
         while adicionando:
-            opcao = self.__tela_carrinho.opcoes_final(self)
+            opcao = self.__tela_carrinho.opcoes_inicial(self)
             if opcao == 1:
                 self.adiciona_produto(restaurantes)
             else:
                 adicionando = False
 
         return self.__carrinho.mostra_lista()
+
+    def fechar_compra(self, carrinho):
+        self.__tela_carrinho.carrinho__(self)
+        for produto in carrinho:
+            self.__tela_carrinho.mostra_restaurantes_produtos(self, 'produto: ' + produto.get_nome() + ' custa: '
+                                                              + str(produto.get_preco()) + 'R$')
+        fechar_compra = self.__tela_carrinho.fechar_compra(self)
+        if fechar_compra == 1: self.pagar(carrinho)  # vai pra forma de pagamento
+
+    def pagar(self, carrinho):
+        preco_final = []
+        for produto in carrinho:
+            preco_final.append(produto.get_preco())
+        preco_somado = sum(preco_final)
+        forma_pagamento = self.__tela_carrinho.pagamento(self, preco_somado)
+        if forma_pagamento == 1:
+            cartao = 'crédito'
+        if forma_pagamento == 2:
+            cartao = 'débito'
+        self.passar_cartao(cartao)
+
+    def passar_cartao(self, forma_pagamento):
+        self.__tela_carrinho.passar_cartao(self, forma_pagamento)
+        exit(0)
