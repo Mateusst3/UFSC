@@ -27,6 +27,7 @@ class ControladorCarrinho:
                                                               produto.get_nome() + ', preço: ' +
                                                               str(produto.get_preco())
                                                               + 'R$')
+            y += 1
         produto_inteiro = self.__tela_carrinho.escolhe_produto(self)
         produto_escolhido = produtos_restaurante_escolhido[produto_inteiro - 1]
         self.__carrinho.append_lista(produto_escolhido)
@@ -38,10 +39,25 @@ class ControladorCarrinho:
             opcao = self.__tela_carrinho.opcoes_inicial(self)
             if opcao == 1:
                 self.adiciona_produto(restaurantes)
+            if opcao == 2:
+                self.remove_produto()
             else:
                 adicionando = False
 
         return self.__carrinho.mostra_lista()
+
+    def remove_produto(self):
+        self.__tela_carrinho.carrinho__(self)
+        y = 1
+        for produto in self.__carrinho.mostra_lista():
+            self.__tela_carrinho.mostra_restaurantes_produtos(self, '[' + str(y) + ']' + 'produto: ' +
+                                                              produto.get_nome() + ', preço: ' +
+                                                              str(produto.get_preco())
+                                                              + 'R$')
+            y += 1
+        produto_removido_int = self.__tela_carrinho.remove_produto(self)
+        produto_removido = self.__carrinho.mostra_lista()[produto_removido_int - 1]
+        self.__carrinho.mostra_lista().remove(produto_removido)
 
     def fechar_compra(self, carrinho):
         self.__tela_carrinho.carrinho__(self)
@@ -49,7 +65,8 @@ class ControladorCarrinho:
             self.__tela_carrinho.mostra_restaurantes_produtos(self, 'produto: ' + produto.get_nome() + ' custa: '
                                                               + str(produto.get_preco()) + 'R$')
         fechar_compra = self.__tela_carrinho.fechar_compra(self)
-        if fechar_compra == 1: self.pagar(carrinho)  # vai pra forma de pagamento
+        if fechar_compra == 1:
+            self.pagar(carrinho)  # vai pra forma de pagamento
 
     def pagar(self, carrinho):
         preco_final = []

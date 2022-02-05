@@ -59,4 +59,3 @@ class ControladorRestaurante:
 
     def fechar_compra(self):
         self.__carrinho_controlador.fechar_compra(self.__carrinho_fechado)
-

@@ -14,13 +14,18 @@ class TelaCarrinho:
         resposta = int(input('Qual produto você deseja comprar? '))
         return resposta
 
+    def remove_produto(self):
+        resposta = int(input('Qual produto você deseja remover do carrinho? '))
+        return resposta
+
     def sucesso(self):
         print('Produto adicionado com sucesso!')
 
     def opcoes_inicial(self):
         print('O que você deseja fazer agora?')
         print('[1] Adicionar um produto ao carrinho')
-        print('[2] Voltar ao sistema?')
+        print('[2] Remover produto do carrinho')
+        print('[3] Voltar ao sistema?')
         resposta = int(input('Escolha: '))
         return resposta
 
