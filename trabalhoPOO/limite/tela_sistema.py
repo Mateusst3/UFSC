@@ -7,3 +7,10 @@ class TelaSistema:
         print("---------------------------------------")
         opcao = int(input('Escolha: '))
         return opcao
+
+    def mostra_exception(self, str):
+        print(str)
+
+    def excepiton_inicial(self, str):
+        print(str)
+        print('Opção inválida, reinicie o sistema!')

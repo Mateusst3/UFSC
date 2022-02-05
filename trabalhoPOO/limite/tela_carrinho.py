@@ -51,3 +51,9 @@ class TelaCarrinho:
         int(input('digite o numero do seu cartão de ' + forma_pagamento + ': '))
         print('Operação finalizada com sucesso!')
         print('Você finalizou sua compra! O sistema será encerrado')
+
+    def restaurante_sem_produtos(self):
+        print('Este restaurante não tem nenhum produto cadastrado')
+
+    def sem_produtos(self):
+        print('Você deve cadastar um produto primeiro!')

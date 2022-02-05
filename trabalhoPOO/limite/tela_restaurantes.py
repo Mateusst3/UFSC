@@ -15,6 +15,14 @@ class TelaRestaurantes:
         resposta = int(input('Qual restaurante você deseja excluir? '))
         return resposta
 
+    def altera_nome_restaurante(self):
+        resposta = int(input('Qual restaurante você deseja alterar o nome? '))
+        return resposta
+
+    def novo_nome(self):
+        resposta = str(input('Qual o novo nome do restaurante? '))
+        return resposta
+
     def adiciona_produto_restaurante(self):
         resposta = int(input('Para qual restaurante você deseja adicionar o produto? '))
         return resposta

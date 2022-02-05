@@ -1,5 +1,6 @@
 from limite.tela_sistema import TelaSistema
 from controle.controlador_menu import ControladorMenu
+from exceptions.exceptions import SpecialExceptions
 
 
 class ControladorSistema:
@@ -9,7 +10,11 @@ class ControladorSistema:
         self.__controlador_menu = ControladorMenu(self)
 
     def inicializa_sistema(self):
-        self.abrir_tela()
+        try:
+            self.abrir_tela()
+
+        except Exception as e:
+            self.__tela_sistema.excepiton_inicial(e)
 
     def fechar_sistema(self):
         exit(0)
@@ -23,4 +28,8 @@ class ControladorSistema:
         while True:
             opcao_escolhida = self.__tela_sistema.tela_sistema()
             funcao_escolhida = lista_opcoes[opcao_escolhida]
-            funcao_escolhida()
+            try:
+                funcao_escolhida()
+            except Exception as exception:
+                excepts = str(SpecialExceptions.captura_exception(str(exception)))
+                self.__tela_sistema.mostra_exception(excepts)
