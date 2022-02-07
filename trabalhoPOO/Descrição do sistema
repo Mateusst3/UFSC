@@ -1,0 +1,14 @@
+SISTEMA DE DELIVERY
+
+Problema: O sistema foi pensado como sendo mais uma solução para sistemas de entregas de comida, estilo ifood e uber
+eats, tendo basicamente todas as funções de cadastrar restaurantes, cadastrar produtos, cadastrar preços e no final
+poder comprar o produto que desejar.
+
+
+Escopo do desenvolvimento: O sistema é composto por 3 menus, o menu inicial, responsável por entrar no sistema, o menu
+de funcionalidades, responsável por toda a lógica de cadastros, tanto de restaurantes, quanto de
+produtos nos restaurantes, e o menu de compras, responsável por adicionar os produtos ao carrinho.
+
+
+Regras de negócio: Foram definidas regras de negócio simples, como não poder cadastrar produtos sem ter um restaurante
+cadastrado.
