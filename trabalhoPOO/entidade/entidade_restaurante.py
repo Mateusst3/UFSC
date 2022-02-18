@@ -10,7 +10,7 @@ class Restaurante:
     def get_nome(self):
         return self.__nome
 
-    def adiciona_produto(self, Produto):
+    def adiciona_produto(self, Produto): #TODO verificar o tipo com isIstance e minusculo
         self.__produtos.append(Produto)
 
     def get_produtos(self):

@@ -2,7 +2,7 @@ class SpecialExceptions:
 
     @staticmethod
     def captura_exception(e):
-        if 'invalid literal for int()' in e:
+        if 'invalid literal for int()' in e: #TODO tratar pelo tipo da exceção - value error
             exception = 'Somente é possível passar numeros!'
 
         elif 'list index out of range' in e:

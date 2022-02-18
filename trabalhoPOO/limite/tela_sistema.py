@@ -8,7 +8,7 @@ class TelaSistema:
         opcao = int(input('Escolha: '))
         return opcao
 
-    def mostra_exception(self, str):
+    def mostra_exception(self, str): #TODO - adicionar telas abstratas para strings
         print(str)
 
     def excepiton_inicial(self, str):
