@@ -27,7 +27,7 @@ class ControladorRestaurante:
             a_excluir = self.__restaurantes[exclui - 1]
             self.__restaurantes.remove(a_excluir)
         else:
-            self.__tela_restaurante.sem_restaurante_cadastrado(self)
+            self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def adiciona_produto(self):
         if len(self.__restaurantes) > 0:
@@ -38,7 +38,7 @@ class ControladorRestaurante:
             produto = Produto(nome_produto, preco_produto)
             self.__restaurantes[restaurante_adiciona - 1].adiciona_produto(produto)
         else:
-            self.__tela_restaurante.sem_restaurante_cadastrado(self)
+            self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def altera_nome_restaurante(self):
         if len(self.__restaurantes) > 0:
@@ -47,30 +47,32 @@ class ControladorRestaurante:
             novo_nome = self.__tela_restaurante.novo_nome(self)
             self.__restaurantes[altera - 1].nome(novo_nome)
         else:
-            self.__tela_restaurante.sem_restaurante_cadastrado(self)
-
+            self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def lista_produtos_restaurantes(self):
         x = 1
         if len(self.__restaurantes) > 0:
-            for restaurante in self.__restaurantes:
-                self.__tela_restaurante.lista_restaurantes(self, '[' + str(x) + '] ' + restaurante.get_nome())
-                for produto in restaurante.get_produtos():
-                    self.__tela_produtos.mostra_produto(self,'     - produto: ' + produto.get_nome() +
-                                                    ' , preço: ' + str(produto.get_preco()))
-                x += 1
+            self.__tela_restaurante(self.__restaurantes)
+            # for restaurante in self.__restaurantes:
+            #     self.__tela_restaurante.lista_restaurantes(self, '[' + str(x) + '] ' + restaurante.get_nome())
+            #     for produto in restaurante.get_produtos():
+            #         self.__tela_produtos.mostra_produto(self, '     - produto: ' + produto.get_nome() +
+            #                                             ' , preço: ' + str(produto.get_preco()))
+            #     x += 1
         else:
-            self.__tela_restaurante.sem_restaurante_cadastrado(self)
+            self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def lista_restaurantes(self):
         if len(self.__restaurantes) > 0:
+            nome_restaurante = []
             y = 1
             for restaurante in self.__restaurantes:
-                self.__tela_restaurante.lista_restaurantes(self, '[' + str(y) + ']' + ' ' + restaurante.get_nome())
+                nome_restaurante.append(restaurante.get_nome()[0])
                 y += 1
+            self.__tela_restaurante.lista_restaurantes(self, nome_restaurante)
 
         else:
-            self.__tela_restaurante.sem_restaurante_cadastrado(self)
+            self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def adiciona_produto_carrinho(self):
         self.__carrinho_fechado = self.__carrinho_controlador.adiciona_ao_carrinho(self.__restaurantes)

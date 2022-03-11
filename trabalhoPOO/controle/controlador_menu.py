@@ -1,6 +1,7 @@
 from limite.tela_menu import TelaMenu
 from controle.controlador_restaurante import ControladorRestaurante
 
+
 class ControladorMenu:
 
     def __init__(self, controlador_sistema):
