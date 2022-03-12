@@ -22,10 +22,25 @@ class ControladorRestaurante:
 
     def exclui_restaurante(self):
         if len(self.__restaurantes) > 0:
-            self.lista_restaurantes()
-            exclui = self.__tela_restaurante.exclui_restaurante(self)
-            a_excluir = self.__restaurantes[exclui - 1]
-            self.__restaurantes.remove(a_excluir)
+            # self.lista_restaurantes()
+            nome_restaurante = []
+            y = 1
+            for restaurante in self.__restaurantes:
+                nome_restaurante.append(restaurante.get_nome()[0])
+                y += 1
+            button, nome_excluido = self.__tela_restaurante.exclui_altera_nome_adiciona(self,
+                                                                                        'Qual restaurante você deseja '
+                                                                                        'excluir?',
+                                                                                        nome_restaurante, 'Excluir')
+            if 'Cancelar' in button:
+                pass
+            else:
+                for restaurante in self.__restaurantes:
+                    if restaurante.get_nome()[0] == nome_excluido[0]:
+                        self.__restaurantes.remove(restaurante)
+
+            # a_excluir = self.__restaurantes[exclui - 1]
+            # self.__restaurantes.remove(a_excluir)
         else:
             self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 

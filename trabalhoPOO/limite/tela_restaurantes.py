@@ -20,11 +20,8 @@ class TelaRestaurantes(Tela):
         self.__window = sg.Window('Cadastrar novo restaurante', default_element_size=(40, 1)).Layout(layout)
         button, values = self.__window.Read()
         self.__window.Close()
-        print(values[0])
         return values
-        # print('-----------Cadastra Restaurante-------------')
-        # restaurante = str(input('Qual o nome do restaurante que você deseja cadastrar? '))
-        # return restaurante
+
 
     def lista_restaurantes(self, restaurantes):
         layout = [
@@ -35,10 +32,6 @@ class TelaRestaurantes(Tela):
         self.__window = sg.Window('Restaurantes cadastrados', default_element_size=(500, 1)).Layout(layout)
         self.__window.Read()
         self.__window.Close()
-
-
-    def sem_restaurante_cadastrado(self):
-        print('nenhum restaurante cadastrado')
 
     def exclui_restaurante(self):
         resposta = int(input('Qual restaurante você deseja excluir? '))
@@ -55,3 +48,14 @@ class TelaRestaurantes(Tela):
     def adiciona_produto_restaurante(self):
         resposta = int(input('Para qual restaurante você deseja adicionar o produto? '))
         return resposta
+
+    def exclui_altera_nome_adiciona(self, texto_input, lista, action):
+        layout = [
+            [sg.Text(texto_input)],
+            [sg.Combo(lista)],
+            [sg.Button(action), sg.Cancel('Cancelar')],
+        ]
+        self.__window = sg.Window('', default_element_size=(500, 1)).Layout(layout)
+        button, values = self.__window.Read()
+        self.__window.Close()
+        return button, values
