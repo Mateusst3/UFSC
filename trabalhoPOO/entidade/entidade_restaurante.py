@@ -4,7 +4,7 @@ class Restaurante:
         self.__nome = nome
         self.__produtos = []
 
-    def nome(self, nome: str):
+    def set_nome(self, nome: str):
         self.__nome = nome
 
     def get_nome(self):

@@ -22,6 +22,15 @@ class TelaRestaurantes(Tela):
         self.__window.Close()
         return values
 
+    def troca_nome(self):
+        layout = [
+            [sg.Text('Novo nome restaurante', size=(15, 1)), sg.InputText()],
+            [sg.Submit('Cadastrar novo nome')]
+        ]
+        self.__window = sg.Window('Alterar nome').Layout(layout)
+        values = self.__window.Read()
+        self.__window.Close()
+        return values
 
     def lista_restaurantes(self, restaurantes):
         layout = [
