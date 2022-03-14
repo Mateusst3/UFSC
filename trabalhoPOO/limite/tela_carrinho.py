@@ -76,7 +76,7 @@ class TelaCarrinho(Tela):
     def mostra_compra_fechada(self, lista):
         layout = [
             [sg.Text('Lista de compras fechadas')],
-            [sg.Listbox(lista, size=100)],
+            [sg.Listbox(lista, size=(100, len(lista)))],
             [sg.Submit('Ok, voltar ao sistema')],
         ]
         self.__window = sg.Window('Lista de produtos').Layout(layout)

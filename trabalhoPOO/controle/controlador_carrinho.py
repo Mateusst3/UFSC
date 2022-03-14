@@ -10,6 +10,7 @@ class ControladorCarrinho:
         self.__carrinho = Carrinho()
         self.__tela_carrinho = TelaCarrinho
         self.__compra_finalizada = CompraFinalizada
+        self.__lista_compras_finalizadas = []
 
     def adiciona_produto(self, restaurantes):
         global nome_restaurante
@@ -110,6 +111,7 @@ class ControladorCarrinho:
         self.__tela_carrinho.passar_cartao(self, forma_pagamento)
         self.__tela_carrinho.sucesso_pagamento(self)
         self.__compra_finalizada = CompraFinalizada(carrinho)
+        self.__lista_compras_finalizadas.append(self.__compra_finalizada)
         self.limpa_carrinho()
         return self.__carrinho.mostra_lista()
 
@@ -124,12 +126,13 @@ class ControladorCarrinho:
             return True
 
     def ver_compras_finalizadas(self):
-        if len(self.__compra_finalizada.get_nome_produtos()) >= 1:
+        if len(self.__lista_compras_finalizadas) >= 1:
             compras = []
-            produtos = ', '.join(self.__compra_finalizada.get_nome_produtos())
-            preco = sum(self.__compra_finalizada.get_preco_produtos())
-            compra_finalizada = ''.join('Produtos comprados: ' + produtos + ', preço: R$' + str(preco))
-            compras.append(compra_finalizada)
+            for compra_fechada in self.__lista_compras_finalizadas:
+                produtos = ', '.join(compra_fechada.get_nome_produtos())
+                preco = sum(compra_fechada.get_preco_produtos())
+                compra_finalizada = ''.join('Produtos comprados: ' + produtos + ', preço: R$' + str(preco))
+                compras.append(compra_finalizada)
             self.__tela_carrinho.mostra_compra_fechada(self, compras)
         else:
             self.__tela_carrinho.mostra_exception(self, 'Você não fez nenhuma compra!')
