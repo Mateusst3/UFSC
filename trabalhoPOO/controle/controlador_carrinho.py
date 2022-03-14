@@ -1,5 +1,6 @@
 from entidade.entidade_carrinho import Carrinho
 from limite.tela_carrinho import TelaCarrinho
+from entidade.entidade_compra_finalizada import CompraFinalizada
 
 
 class ControladorCarrinho:
@@ -8,6 +9,7 @@ class ControladorCarrinho:
         self.__controlador_carrinho = controlador_carrinho
         self.__carrinho = Carrinho()
         self.__tela_carrinho = TelaCarrinho
+        self.__compra_finalizada = CompraFinalizada
 
     def adiciona_produto(self, restaurantes):
         global nome_restaurante
@@ -50,6 +52,8 @@ class ControladorCarrinho:
                 self.adiciona_produto(restaurantes)
             if opcao == 2:
                 self.remove_produto()
+            if opcao == 4:
+                self.ver_compras_finalizadas()
             else:
                 adicionando = False
 
@@ -68,7 +72,6 @@ class ControladorCarrinho:
                 return
 
             else:
-                print(nome_produto)
                 for produto_excluir in self.__carrinho.mostra_lista():
                     if produto_excluir.get_nome() == a_remover[0][0]:
                         self.__carrinho.mostra_lista().remove(produto_excluir)
@@ -85,8 +88,11 @@ class ControladorCarrinho:
             fechar_compra = self.__tela_carrinho.fechar_compra(self)
             if fechar_compra == 1:
                 self.pagar(carrinho)
+            else:
+                return carrinho
         else:
             self.__tela_carrinho.mostra_exception(self, 'Você deve cadastar um produto primeiro!')
+            return carrinho
 
     def pagar(self, carrinho):
         preco_final = []
@@ -98,12 +104,14 @@ class ControladorCarrinho:
             cartao = 'crédito'
         if forma_pagamento == 2:
             cartao = 'débito'
-        self.passar_cartao(cartao)
+        self.passar_cartao(cartao, carrinho)
 
-    def passar_cartao(self, forma_pagamento):
+    def passar_cartao(self, forma_pagamento, carrinho):
         self.__tela_carrinho.passar_cartao(self, forma_pagamento)
         self.__tela_carrinho.sucesso_pagamento(self)
-        exit(0)
+        self.__compra_finalizada = CompraFinalizada(carrinho)
+        self.limpa_carrinho()
+        return self.__carrinho.mostra_lista()
 
     def verifica_existe_produto(self, restaurantes):
         restaurantes_sem_produto = []
@@ -114,3 +122,17 @@ class ControladorCarrinho:
             return False
         else:
             return True
+
+    def ver_compras_finalizadas(self):
+        if len(self.__compra_finalizada.get_nome_produtos()) >= 1:
+            compras = []
+            produtos = ', '.join(self.__compra_finalizada.get_nome_produtos())
+            preco = sum(self.__compra_finalizada.get_preco_produtos())
+            compra_finalizada = ''.join('Produtos comprados: ' + produtos + ', preço: R$' + str(preco))
+            compras.append(compra_finalizada)
+            self.__tela_carrinho.mostra_compra_fechada(self, compras)
+        else:
+            self.__tela_carrinho.mostra_exception(self, 'Você não fez nenhuma compra!')
+
+    def limpa_carrinho(self):
+        self.__carrinho.exclui_lista()

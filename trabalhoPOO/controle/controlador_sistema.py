@@ -14,7 +14,7 @@ class ControladorSistema:
             self.abrir_tela()
 
         except Exception as e:
-            self.__tela_sistema.excepiton_inicial(e)
+            self.__tela_sistema.mostra_exception(e)
 
     def fechar_sistema(self):
         exit(0)

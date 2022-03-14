@@ -20,15 +20,13 @@ class TelaCarrinho(Tela):
         button, values = self.__window.Read()
         self.__window.Close()
         return button, values
-        # resposta = int(input('De qual restaurante você deseja adicionar o produto? '))
-        # return resposta
 
     def sucesso(self, produto):
         sg.Popup('Produto adicionado com sucesso!' + ' Produto: ' + produto.get_nome() + ', preço: R$' +
                  str(produto.get_preco()))
 
     def sucesso_pagamento(self):
-        sg.Popup('Pagamento realizado com sucesso! O sistema será encerrado')
+        sg.Popup('Pagamento realizado com sucesso! Sua conta foi registrada')
 
     def opcoes_inicial(self):
         layout = [
@@ -36,6 +34,7 @@ class TelaCarrinho(Tela):
             [sg.Button('Adicionar um produto ao carrinho', key=1)],
             [sg.Button('Remover produto do carrinho', key=2)],
             [sg.Button('Voltar ao sistema', key=3)],
+            [sg.Button('Ver compras finalizadas', key=4)]
         ]
         self.__window = sg.Window('Menu do sistema', default_element_size=(40, 1)).Layout(layout)
         button, values = self.__window.Read()
@@ -73,3 +72,14 @@ class TelaCarrinho(Tela):
         self.__window = sg.Window('Cadastrar novo restaurante', default_element_size=(40, 1)).Layout(layout)
         self.__window.Read()
         self.__window.Close()
+
+    def mostra_compra_fechada(self, lista):
+        layout = [
+            [sg.Text('Lista de compras fechadas')],
+            [sg.Listbox(lista, size=100)],
+            [sg.Submit('Ok, voltar ao sistema')],
+        ]
+        self.__window = sg.Window('Lista de produtos').Layout(layout)
+        self.__window.Read()
+        self.__window.Close()
+        return

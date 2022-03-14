@@ -22,15 +22,3 @@ class TelaSistema(Tela):
         button, values = self.__window.Read()
         self.__window.Close()
         return 1 if 'Entrar' in button else 2
-
-        # print("----------Sistema de Delivery----------")
-        # print("O que você deseja fazer?")
-        # print("[1] Entrar no sistema")
-        # print("[2] Fechar o sistema")
-        # print("---------------------------------------")
-        # opcao = int(input('Escolha: '))
-        # return opcao
-
-    def excepiton_inicial(self, str):
-        print(str)
-        print('Opção inválida, reinicie o sistema!')

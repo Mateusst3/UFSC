@@ -6,4 +6,4 @@ class Tela(ABC):
 
     @abstractmethod
     def mostra_exception(self, exception):
-        pass
+        sg.Popup('Alguma coisa deu errado! O sistema se desligará ' + exception)

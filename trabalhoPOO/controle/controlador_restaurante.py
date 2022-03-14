@@ -1,7 +1,6 @@
 from entidade.entidade_restaurante import Restaurante
 from limite.tela_restaurantes import TelaRestaurantes
 from entidade.entidade_produto import Produto
-from limite.tela_produtos import TelaProdutos
 from controle.controlador_carrinho import ControladorCarrinho
 
 
@@ -11,7 +10,6 @@ class ControladorRestaurante:
         self.__tela_restaurante = TelaRestaurantes
         self.__restaurantes = []
         self.__controlador_restaurante = controlador_restaurante
-        self.__tela_produtos = TelaProdutos
         self.__carrinho_controlador = ControladorCarrinho(self)
         self.__carrinho_fechado = []
 
@@ -26,7 +24,6 @@ class ControladorRestaurante:
 
     def exclui_restaurante(self):
         if len(self.__restaurantes) > 0:
-            # self.lista_restaurantes()
             nome_restaurante = []
             y = 1
             for restaurante in self.__restaurantes:
@@ -63,13 +60,6 @@ class ControladorRestaurante:
                 for restaurante in self.__restaurantes:
                     if restaurante.get_nome()[0] == values[0]:
                         restaurante.adiciona_produto(produto)
-
-            # self.lista_restaurantes()
-            # restaurante_adiciona = self.__tela_restaurante.adiciona_produto_restaurante(self)
-            # nome_produto = self.__tela_produtos.nome_produto(self)
-            # preco_produto = self.__tela_produtos.preco_produto(self, nome_produto)
-            # produto = Produto(nome_produto, preco_produto)
-            # self.__restaurantes[restaurante_adiciona - 1].adiciona_produto(produto)
         else:
             self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
@@ -89,7 +79,6 @@ class ControladorRestaurante:
             else:
                 for restaurante in self.__restaurantes:
                     if restaurante.get_nome()[0] == value[0]:
-                        print(value_novo_nome)
                         restaurante.set_nome(value_novo_nome)
         else:
             self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
@@ -99,7 +88,7 @@ class ControladorRestaurante:
             lista_produtos_restaurante = []
             for restaurante in self.__restaurantes:
                 for produto in restaurante.get_produtos():
-                    lista_produtos_restaurante.append('Produto: ' + produto.get_nome() + ', com preço: ' +
+                    lista_produtos_restaurante.append('Produto: ' + produto.get_nome() + ', com preço: R$' +
                                                       str(produto.get_preco()) + ', do restaurante ' +
                                                       restaurante.get_nome()[0])
             self.__tela_restaurante.mostra_adiciona_produto_restaurante(self, lista_produtos_restaurante)
@@ -120,4 +109,5 @@ class ControladorRestaurante:
         self.__carrinho_fechado = self.__carrinho_controlador.adiciona_ao_carrinho(self.__restaurantes)
 
     def fechar_compra(self):
-        self.__carrinho_controlador.fechar_compra(self.__carrinho_fechado)
+        carrinho = self.__carrinho_controlador.fechar_compra(self.__carrinho_fechado)
+        self.__carrinho_fechado = carrinho
