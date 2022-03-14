@@ -1,59 +1,75 @@
-class TelaCarrinho:
+import PySimpleGUI as sg
+from limite.tela_pai import Tela
 
-    def opcoes__(self):
-        print('---------------------------------Opções---------------------------------')
 
-    def mostra_restaurantes_produtos(self, string):
-        print(string)
+class TelaCarrinho(Tela):
 
-    def escolhe_restaurante(self):
-        resposta = int(input('De qual restaurante você deseja adicionar o produto? '))
-        return resposta
+    def mostra_exception(self, exception):
+        sg.Popup('Tivemos o seguinte problema: ' + exception)
 
-    def escolhe_produto(self):
-        resposta = int(input('Qual produto você deseja comprar? '))
-        return resposta
+    def __init__(self):
+        self.__window = None
 
-    def remove_produto(self):
-        resposta = int(input('Qual produto você deseja remover do carrinho? '))
-        return resposta
+    def escolhe_exclui_mostra_restaurante_produto(self, texto_inicial, lista, tipo_restaurante_produto):
+        layout = [
+            [sg.Text(texto_inicial)],
+            [sg.Listbox(lista, size=(100, len(lista)))],
+            [sg.Submit(tipo_restaurante_produto), sg.Cancel('Cancelar')],
+        ]
+        self.__window = sg.Window('Lista de produtos').Layout(layout)
+        button, values = self.__window.Read()
+        self.__window.Close()
+        return button, values
+        # resposta = int(input('De qual restaurante você deseja adicionar o produto? '))
+        # return resposta
 
-    def sucesso(self):
-        print('Produto adicionado com sucesso!')
+    def sucesso(self, produto):
+        sg.Popup('Produto adicionado com sucesso!' + ' Produto: ' + produto.get_nome() + ', preço: R$' +
+                 str(produto.get_preco()))
+
+    def sucesso_pagamento(self):
+        sg.Popup('Pagamento realizado com sucesso! O sistema será encerrado')
 
     def opcoes_inicial(self):
-        print('O que você deseja fazer agora?')
-        print('[1] Adicionar um produto ao carrinho')
-        print('[2] Remover produto do carrinho')
-        print('[3] Voltar ao sistema?')
-        resposta = int(input('Escolha: '))
-        return resposta
-
-    def carrinho__(self):
-        print('---------------------------------Produtos no seu carrinho---------------------------------')
+        layout = [
+            [sg.Text('O que você deseja fazer?')],
+            [sg.Button('Adicionar um produto ao carrinho', key=1)],
+            [sg.Button('Remover produto do carrinho', key=2)],
+            [sg.Button('Voltar ao sistema', key=3)],
+        ]
+        self.__window = sg.Window('Menu do sistema', default_element_size=(40, 1)).Layout(layout)
+        button, values = self.__window.Read()
+        self.__window.Close()
+        return int(button)
 
     def fechar_compra(self):
-        print('Você deseja finalizar sua compra? ')
-        print('[1] Sim')
-        print('[2] Não')
-        resposta = int(input('Resposta: '))
-        return resposta
+        layout = [
+            [sg.Text('Você deseja finalizar sua compra?')],
+            [sg.Button('Sim', key=1)],
+            [sg.Button('Não', key=2)],
+        ]
+        self.__window = sg.Window('Fechar compra', default_element_size=(40, 1)).Layout(layout)
+        button, values = self.__window.Read()
+        self.__window.Close()
+        return int(button)
 
     def pagamento(self, preco):
-        print('O total de suas compras deu: ' + str(preco) + 'R$')
-        print('Qual sua forma de pagamento?')
-        print('[1] Cartão de crédito')
-        print('[2] Cartão de débito')
-        resposta = int(input('Escolha: '))
-        return resposta
+        layout = [
+            [sg.Text('O total de suas compras deu: R$' + str(preco))],
+            [sg.Button('Cartão de crédito', key=1)],
+            [sg.Button('Cartão de débito', key=2)],
+        ]
+        self.__window = sg.Window('Menu do sistema', default_element_size=(40, 1)).Layout(layout)
+        button, values = self.__window.Read()
+        self.__window.Close()
+        return int(button)
 
     def passar_cartao(self, forma_pagamento):
-        int(input('digite o numero do seu cartão de ' + forma_pagamento + ': '))
-        print('Operação finalizada com sucesso!')
-        print('Você finalizou sua compra! O sistema será encerrado')
-
-    def restaurante_sem_produtos(self):
-        print('Este restaurante não tem nenhum produto cadastrado')
-
-    def sem_produtos(self):
-        print('Você deve cadastar um produto primeiro!')
+        layout = [
+            [sg.Text('Processar pagamento')],
+            [sg.Text('Digite o número do cartão de ' + forma_pagamento), sg.InputText()],
+            [sg.Submit('Pagar')]
+        ]
+        self.__window = sg.Window('Cadastrar novo restaurante', default_element_size=(40, 1)).Layout(layout)
+        self.__window.Read()
+        self.__window.Close()

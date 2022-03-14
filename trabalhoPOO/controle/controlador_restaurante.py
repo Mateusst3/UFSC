@@ -53,6 +53,16 @@ class ControladorRestaurante:
             button, values = self.__tela_restaurante.exclui_altera_nome_adiciona(self, '', nome_restaurante,
                                                                                  'Quero adicionar um produto a este '
                                                                                  'restaurante')
+            if 'Cancelar' in button:
+                return
+            else:
+                butto, produto = self.__tela_restaurante.cadastra_produto(self, values[0])
+                nome_produto = produto[0]
+                preco_produto = int(produto[1])
+                produto = Produto(nome_produto, preco_produto)
+                for restaurante in self.__restaurantes:
+                    if restaurante.get_nome()[0] == values[0]:
+                        restaurante.adiciona_produto(produto)
 
             # self.lista_restaurantes()
             # restaurante_adiciona = self.__tela_restaurante.adiciona_produto_restaurante(self)
@@ -85,15 +95,14 @@ class ControladorRestaurante:
             self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 
     def lista_produtos_restaurantes(self):
-        x = 1
         if len(self.__restaurantes) > 0:
-            self.__tela_restaurante(self.__restaurantes)
-            # for restaurante in self.__restaurantes:
-            #     self.__tela_restaurante.lista_restaurantes(self, '[' + str(x) + '] ' + restaurante.get_nome())
-            #     for produto in restaurante.get_produtos():
-            #         self.__tela_produtos.mostra_produto(self, '     - produto: ' + produto.get_nome() +
-            #                                             ' , preço: ' + str(produto.get_preco()))
-            #     x += 1
+            lista_produtos_restaurante = []
+            for restaurante in self.__restaurantes:
+                for produto in restaurante.get_produtos():
+                    lista_produtos_restaurante.append('Produto: ' + produto.get_nome() + ', com preço: ' +
+                                                      str(produto.get_preco()) + ', do restaurante ' +
+                                                      restaurante.get_nome()[0])
+            self.__tela_restaurante.mostra_adiciona_produto_restaurante(self, lista_produtos_restaurante)
         else:
             self.__tela_restaurante.mostra_exception(self, 'Nenhum restaurante cadastrado!')
 

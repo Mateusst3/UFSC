@@ -28,8 +28,8 @@ class ControladorSistema:
         while True:
             opcao_escolhida = self.__tela_sistema.tela_sistema()
             funcao_escolhida = lista_opcoes[opcao_escolhida]
-            # try:
-            funcao_escolhida()
-            # except Exception as exception:
-            #     excepts = str(SpecialExceptions.captura_exception(str(exception)))
-            #     self.__tela_sistema.mostra_exception(excepts)
+            try:
+                funcao_escolhida()
+            except Exception as exception:
+                excepts = str(SpecialExceptions.captura_exception(str(exception)))
+                self.__tela_sistema.mostra_exception(excepts)

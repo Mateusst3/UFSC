@@ -38,17 +38,32 @@ class TelaRestaurantes(Tela):
             [sg.Combo(restaurantes, ['restaurantes....'])],
             [sg.Button('Ok, fechar janela')],
         ]
-        self.__window = sg.Window('Restaurantes cadastrados', default_element_size=(500, 1)).Layout(layout)
+        self.__window = sg.Window('Restaurantes cadastrados', default_element_size=(40, 1)).Layout(layout)
         self.__window.Read()
         self.__window.Close()
 
-    def exclui_restaurante(self):
-        resposta = int(input('Qual restaurante você deseja excluir? '))
-        return resposta
+    def cadastra_produto(self, nome_restaurante):
+        layout = [
+            [sg.Text('Cadastrar produto')],
+            [sg.Text('Nome do produto'), sg.InputText('Digite aqui o nome do produto...')],
+            [sg.Text('Preço do produto'), sg.Input('Digite aqui o preço do produto...')],
+            [sg.Button('Cadastrar produto em ' + nome_restaurante,)]
+        ]
+        self.__window = sg.Window('Cadastrar produto', default_element_size=(40, 1)).Layout(layout)
+        values = self.__window.Read()
+        self.__window.Close()
+        return values
 
-    def altera_nome_restaurante(self):
-        resposta = int(input('Qual restaurante você deseja alterar o nome? '))
-        return resposta
+    def mostra_adiciona_produto_restaurante(self, lista):
+        layout = [
+            [sg.Text('Produtos e restaurantes')],
+            [sg.Listbox(lista, size=(100, len(lista)))],
+            [sg.Button('Ok, voltar')]
+        ]
+        self.__window = sg.Window('Lista de produtos').Layout(layout)
+        self.__window.Read()
+        self.__window.Close()
+
 
     def novo_nome(self):
         resposta = str(input('Qual o novo nome do restaurante? '))

@@ -10,35 +10,37 @@ class ControladorCarrinho:
         self.__tela_carrinho = TelaCarrinho
 
     def adiciona_produto(self, restaurantes):
+        global nome_restaurante
         tem_produto = self.verifica_existe_produto(restaurantes)
         if tem_produto:
-            self.__tela_carrinho.opcoes__(self)
-            x = 1
+            nome_restaurantes = []
             for restaurante in restaurantes:
-                self.__tela_carrinho.mostra_restaurantes_produtos(self, '[' + str(x) + '] ' + restaurante.get_nome())
-                for produto in restaurante.get_produtos():
-                    self.__tela_carrinho.mostra_restaurantes_produtos(self, '     - produto: ' + produto.get_nome() +
-                                                                  ' , preço: ' + str(produto.get_preco()))
-                x += 1
-            opcao = self.__tela_carrinho.escolhe_restaurante(self)
-            self.__tela_carrinho.opcoes__(self)
-            produtos_restaurante_escolhido = restaurantes[opcao - 1].get_produtos()
-            y = 1
-            if len(produtos_restaurante_escolhido) > 0:
-                for produto in produtos_restaurante_escolhido:
-                    self.__tela_carrinho.mostra_restaurantes_produtos(self, '[' + str(y) + ']' + 'produto: ' +
-                                                                      produto.get_nome() + ', preço: ' +
-                                                                      str(produto.get_preco())
-                                                                      + 'R$')
-                    y += 1
-                produto_inteiro = self.__tela_carrinho.escolhe_produto(self)
-                produto_escolhido = produtos_restaurante_escolhido[produto_inteiro - 1]
-                self.__carrinho.append_lista(produto_escolhido)
-                self.__tela_carrinho.sucesso(self)
+                nome_restaurantes.append(restaurante.get_nome()[0])
+            button, nome_restaurante = self.__tela_carrinho.escolhe_exclui_mostra_restaurante_produto(self,
+                                                                                                      'De qual restaurante você vai '
+                                                                                                      'querer adicionar um produto?',
+                                                                                                      nome_restaurantes,
+                                                                                                      'Ok, selecionar restaurante')
+            if 'Cancelar' in button:
+                return
             else:
-                self.__tela_carrinho.restaurante_sem_produtos(self)
+                for restaurante in restaurantes:
+                    if restaurante.get_nome()[0] == nome_restaurante[0][0]:
+                        lista_produtos = []
+                        for _produto in restaurante.get_produtos():
+                            lista_produtos.append(_produto.get_nome())
+                        button, produto = self.__tela_carrinho.escolhe_exclui_mostra_restaurante_produto(self,
+                                                                                                         'Qual produto você quer adicionar ao '
+                                                                                                         'carrinho?',
+                                                                                                         lista_produtos,
+                                                                                                         'Ok, adicionar produto'
+                                                                                                         )
+                        for produtos in restaurante.get_produtos():
+                            if produtos.get_nome() == produto[0][0]:
+                                self.__carrinho.append_lista(produtos)
+                                self.__tela_carrinho.sucesso(self, produtos)
         else:
-            self.__tela_carrinho.sem_produtos(self)
+            self.__tela_carrinho.mostra_exception(self, 'Você deve cadastar um produto primeiro!')
 
     def adiciona_ao_carrinho(self, restaurantes):
         adicionando = True
@@ -55,31 +57,36 @@ class ControladorCarrinho:
 
     def remove_produto(self):
         if len(self.__carrinho.mostra_lista()) > 0:
-            self.__tela_carrinho.carrinho__(self)
-            y = 1
+            nome_produto = []
             for produto in self.__carrinho.mostra_lista():
-                self.__tela_carrinho.mostra_restaurantes_produtos(self, '[' + str(y) + ']' + 'produto: ' +
-                                                                  produto.get_nome() + ', preço: ' +
-                                                                  str(produto.get_preco())
-                                                                  + 'R$')
-                y += 1
-            produto_removido_int = self.__tela_carrinho.remove_produto(self)
-            produto_removido = self.__carrinho.mostra_lista()[produto_removido_int - 1]
-            self.__carrinho.mostra_lista().remove(produto_removido)
+                nome_produto.append(produto.get_nome())
+            button, a_remover = self.__tela_carrinho.escolhe_exclui_mostra_restaurante_produto(self,
+                                                                                               'Qual produto você quer remover?',
+                                                                                               nome_produto,
+                                                                                               'Remover produto selecionado')
+            if 'Cancelar' in button:
+                return
+
+            else:
+                print(nome_produto)
+                for produto_excluir in self.__carrinho.mostra_lista():
+                    if produto_excluir.get_nome() == a_remover[0][0]:
+                        self.__carrinho.mostra_lista().remove(produto_excluir)
         else:
-            self.__tela_carrinho.sem_produtos(self)
+            self.__tela_carrinho.mostra_exception(self, 'Você não tem nenhum produto no carrinho')
 
     def fechar_compra(self, carrinho):
         if len(carrinho) > 0:
-            self.__tela_carrinho.carrinho__(self)
+            lista_produtos_nomes = []
             for produto in carrinho:
-                self.__tela_carrinho.mostra_restaurantes_produtos(self, 'produto: ' + produto.get_nome() + ' custa: '
-                                                                  + str(produto.get_preco()) + 'R$')
+                lista_produtos_nomes.append('Produto: ' + produto.get_nome() + ', preço: R$' + str(produto.get_preco()))
+            self.__tela_carrinho.escolhe_exclui_mostra_restaurante_produto(self, 'Resumo das compras',
+                                                                           lista_produtos_nomes, 'Ok')
             fechar_compra = self.__tela_carrinho.fechar_compra(self)
             if fechar_compra == 1:
                 self.pagar(carrinho)
         else:
-            self.__tela_carrinho.sem_produtos(self)
+            self.__tela_carrinho.mostra_exception(self, 'Você deve cadastar um produto primeiro!')
 
     def pagar(self, carrinho):
         preco_final = []
@@ -95,6 +102,7 @@ class ControladorCarrinho:
 
     def passar_cartao(self, forma_pagamento):
         self.__tela_carrinho.passar_cartao(self, forma_pagamento)
+        self.__tela_carrinho.sucesso_pagamento(self)
         exit(0)
 
     def verifica_existe_produto(self, restaurantes):
