@@ -5,7 +5,8 @@ class Jogador:
 
     def __init__(self, nome):
         self.__nome = nome
-        self.__id = uuid.uuid1().int
+        uuidParam = uuid.uuid1().int
+        self.__id = int(str(uuidParam)[:6])
 
     def get_nome(self):
         return self.__nome
