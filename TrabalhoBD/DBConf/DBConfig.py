@@ -6,4 +6,4 @@ class DBConfig:
 
     def open_connection(self):
         return connection.MySQLConnection(host='localhost', user='root', password='',
-                                                        database='TrabalhoBd')
+                                                        database='TrabalhoBd2')
