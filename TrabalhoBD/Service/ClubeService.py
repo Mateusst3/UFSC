@@ -24,4 +24,4 @@ class ClubeService:
         sql = f"DELETE from Clube c where Id_clube = '{values}'"
         cursor.execute(sql)
         db_connection.commit()
-        return 'Jogador excluido com sucesso com id: ' + str(id_clube)
+        return 'Clube excluido com sucesso com id: ' + str(id_clube)
