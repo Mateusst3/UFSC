@@ -24,4 +24,3 @@ async def root(item: Item):
 @jogador.post("/jogador/excluir")
 async def excluir_jogador(item: ItemId):
     return service.exclude_jogador(item.id)
-
