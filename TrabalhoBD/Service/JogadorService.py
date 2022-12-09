@@ -25,3 +25,11 @@ class JogadorService:
         cursor.execute(sql)
         db_connection.commit()
         return 'Jogador excluido com sucesso com id: ' + str(id_jogador)
+
+    def update_jogador(self, id_jogador, nome):
+        db_connection = self.dbConfig.open_connection()
+        cursor = db_connection.cursor(buffered=True)
+        sql = f"UPDATE Jogador SET Nome = '{nome}' WHERE id_jogador = '{str(id_jogador)}'"
+        cursor.execute(sql)
+        db_connection.commit()
+        return 'Jogador atualizado com sucesso com id: ' + str(id_jogador)
