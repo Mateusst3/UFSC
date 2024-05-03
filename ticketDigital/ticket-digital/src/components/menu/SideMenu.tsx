@@ -12,7 +12,7 @@ export default function SideMenu() {
       <section
         className={`absolute md:relative ${
           isOpen ? "flex" : "hidden"
-        } flex-col py-12 gap-6 px-3 w-auto h-full bg-black`}
+        } flex-col py-12 gap-6 px-3 w-auto h-auto bg-black`}
       >
         <button
           className={`absolute p-3 bg-gray-700 rounded-full -right-5 top-2`}
