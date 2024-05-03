@@ -14,7 +14,7 @@ export default function Home() {
               Sugestões para você!
             </p>
           </section>
-          <section className="flex flex-wrap justify-between w-full gap-3">
+          <section className="flex flex-wrap justify-center lg:justify-between w-full gap-3">
             <DisplayTicketHome image="/images/foto_1.png" name="Tomorrowland" />
             <DisplayTicketHome
               image="/images/foto_4.png"
@@ -27,7 +27,7 @@ export default function Home() {
             />
           </section>
           <p className="text-white text-3xl">O que há de novo</p>
-          <section className="flex flex-wrap justify-start w-full gap-6">
+          <section className="flex flex-wrap justify-center lg:justify-start w-full gap-6">
             <DisplayNewEvent
               image={"/images/image 1.png"}
               name={"Campeonato Carioca"}

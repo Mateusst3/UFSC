@@ -1,13 +1,25 @@
+import { useState } from "react";
 import { AiFillHome } from "react-icons/ai";
-import { FaUserFriends } from "react-icons/fa";
+import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaUserFriends } from "react-icons/fa";
 import { FaMagnifyingGlass, FaRankingStar, FaWallet } from "react-icons/fa6";
 import { IoTicketSharp } from "react-icons/io5";
 import { MdStars } from "react-icons/md";
 
 export default function SideMenu() {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
-      <section className="flex flex-col py-12 gap-6 px-3 w-auto h-full bg-black">
+      <section
+        className={`absolute md:relative ${
+          isOpen ? "flex" : "hidden"
+        } flex-col py-12 gap-6 px-3 w-auto h-full bg-black`}
+      >
+        <button
+          className={`absolute p-3 bg-gray-700 rounded-full -right-5 top-2`}
+          onClick={() => setIsOpen(false)}
+        >
+          <FaRegArrowAltCircleLeft className="text-white" />
+        </button>
         <div className="w-full flex flex-row justify-center items-center">
           <img src="/images/Logo.png" alt="" className="w-[180px]" />
         </div>
@@ -24,7 +36,7 @@ export default function SideMenu() {
             <p className="text-white text-xl font-bold">Busca</p>
           </button>
           <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg">
-            <IoTicketSharp  className="text-4xl"/>
+            <IoTicketSharp className="text-4xl" />
             <p className="text-white text-xl font-bold">Seus Tickets</p>
           </button>
           <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg">
@@ -45,6 +57,14 @@ export default function SideMenu() {
           </button>
         </section>
       </section>
+      {!isOpen && (
+        <button
+          className={`absolute p-3 bg-gray-700 rounded-full ${isOpen} -left-3 top-2`}
+          onClick={() => setIsOpen(true)}
+        >
+          <FaRegArrowAltCircleRight className="text-white" />
+        </button>
+      )}
     </>
   );
 }
