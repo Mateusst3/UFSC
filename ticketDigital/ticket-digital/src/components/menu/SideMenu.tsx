@@ -1,6 +1,11 @@
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { AiFillHome } from "react-icons/ai";
-import { FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight, FaUserFriends } from "react-icons/fa";
+import {
+  FaRegArrowAltCircleLeft,
+  FaRegArrowAltCircleRight,
+  FaUserFriends,
+} from "react-icons/fa";
 import { FaMagnifyingGlass, FaRankingStar, FaWallet } from "react-icons/fa6";
 import { IoTicketSharp } from "react-icons/io5";
 import { MdStars } from "react-icons/md";
@@ -9,7 +14,10 @@ export default function SideMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <>
-      <section
+      <motion.section
+        initial={{ x: -100 }}
+        animate={{ x: 0 }}
+        transition={{ ease: "easeOut", duration: 2 }}
         className={`absolute md:relative ${
           isOpen ? "flex" : "hidden"
         } flex-col py-12 gap-6 px-3 w-auto h-auto bg-black`}
@@ -56,7 +64,7 @@ export default function SideMenu() {
             <p className="text-white text-xl font-bold">Classificação</p>
           </button>
         </section>
-      </section>
+      </motion.section>
       {!isOpen && (
         <button
           className={`absolute p-3 bg-gray-700 rounded-full ${isOpen} -left-3 top-2`}

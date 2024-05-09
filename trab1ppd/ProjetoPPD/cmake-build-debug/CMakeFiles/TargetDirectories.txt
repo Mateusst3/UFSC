@@ -1,0 +1,3 @@
+C:/Users/mtex6/OneDrive/Área de Trabalho/UFSC/trab1ppd/ProjetoPPD/cmake-build-debug/CMakeFiles/untitled.dir
+C:/Users/mtex6/OneDrive/Área de Trabalho/UFSC/trab1ppd/ProjetoPPD/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mtex6/OneDrive/Área de Trabalho/UFSC/trab1ppd/ProjetoPPD/cmake-build-debug/CMakeFiles/rebuild_cache.dir
