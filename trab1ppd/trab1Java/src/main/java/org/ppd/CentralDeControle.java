@@ -25,7 +25,7 @@ class CentralDeControle implements Runnable {
         try {
             while (true) {
                 Integer dadoSensorial = null;
-                lock.lock(); // Bloquear o mutex
+                lock.lock(); // Bloquear o mutex da fila para o Sensor não acessar
                 try {
                     dadoSensorial = queue.poll(); // Consumir dados da fila
                 } finally {
@@ -34,7 +34,6 @@ class CentralDeControle implements Runnable {
                 if (dadoSensorial != null) {
                     executorService.execute(new TarefaDeProcessamento(dadoSensorial, atuadores, locks));
                 }
-                //Thread.sleep(1000); // Intervalo para tentar consumir novamente
             }
         } catch (Exception e) {
             Thread.currentThread().interrupt();

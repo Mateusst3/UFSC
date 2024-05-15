@@ -4,10 +4,11 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
-class Sensor implements Runnable {
+class Sensor extends Thread {
     private final Random random = new Random();
     private final Queue<Integer> queue;
     private final ReentrantLock lock;
+
     public Sensor(Queue<Integer> queue, ReentrantLock lock) {
         this.queue = queue;
         this.lock = lock;

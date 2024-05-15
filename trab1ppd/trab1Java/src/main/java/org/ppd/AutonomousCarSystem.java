@@ -20,11 +20,11 @@ public class AutonomousCarSystem {
 
         Queue<Integer> queue = new LinkedList<>();
         ReentrantLock lock = new ReentrantLock();
-
-        ExecutorService sensorExecutorService = Executors.newFixedThreadPool(N_SENSORS);
+        //Lock para a fila produtor/consumidor - utilizados pelo sensor e pela central de controle
 
         for (int i = 0; i < N_SENSORS; i++) {
-            sensorExecutorService.execute(new Sensor(queue, lock));
+            Sensor sensor = new Sensor(queue, lock);
+            sensor.start();
         }
 
         Map<Integer, Integer> atuadores = new HashMap<>();
