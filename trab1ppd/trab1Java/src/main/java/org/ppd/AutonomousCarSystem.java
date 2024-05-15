@@ -100,7 +100,7 @@ class TarefaDeProcessamento implements Runnable {
         }
         Impressora.impressaoUnica(String.format("%s definiu atividade do atuador %d para %d \n", Thread.currentThread().getName(), atuadorId, atividade));
     }
-
+    //teste git config
     @Override
     public void run() {
 
