@@ -36,7 +36,7 @@ class TarefaDeProcessamento implements Runnable {
         if (chance < 0.2) {
             throw new Exception("Falha na impressão");
         }
-        Impressora.impressaoUnica(String.format("%s definiu atividade do atuador %d para %d \n", Thread.currentThread().getName(), atuadorId, atividade));
+        Impressora.impressaoUnica(String.format("Alterando: %d com valor %d \n",  atuadorId, atividade));
     }
     //teste git config
     @Override
