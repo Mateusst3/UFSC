@@ -43,7 +43,7 @@ class TarefaDeProcessamento implements Runnable {
     public void run() {
 
         try {
-            locks[atuadorId].lockInterruptibly(); // Bloquear o mutex do atuador de forma interruptível
+            locks[atuadorId].lock(); // Não permite que um atuador seja alterado por mais de uma thread ao mesmo tempo
 
             int atividade = random.nextInt(101); // Gerar nível de atividade entre 0 e 100
 
