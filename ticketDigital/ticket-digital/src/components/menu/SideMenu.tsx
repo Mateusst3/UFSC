@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import {
@@ -12,13 +13,14 @@ import { MdStars } from "react-icons/md";
 
 export default function SideMenu() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
   return (
     <>
       <motion.section
         initial={{ x: -100 }}
         animate={{ x: 0 }}
         transition={{ ease: "easeOut", duration: 2 }}
-        className={`absolute md:relative ${
+        className={`absolute z-50 top-0 left-0 md:relative ${
           isOpen ? "flex" : "hidden"
         } flex-col py-12 gap-6 px-3 w-auto h-auto bg-black`}
       >
@@ -35,15 +37,23 @@ export default function SideMenu() {
           <img src="/images/name.png" alt="" className="w-[258px]" />
         </div>
         <section className="flex flex-col px-3">
-          <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg">
+          <button
+            className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg"
+            onClick={() => router.push("/")}
+          >
             <AiFillHome className="text-4xl" />
             <p className="text-white text-xl font-bold">Início</p>
           </button>
-          <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg">
+          <button
+            className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg"
+            onClick={() => router.push("/buscar")}
+          >
             <FaMagnifyingGlass className="text-4xl" />
             <p className="text-white text-xl font-bold">Busca</p>
           </button>
-          <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg">
+          <button className="w-[300px] flex flex-row items-center gap-6 justify-start h-auto px-6 py-4 text-white bg-black hover:bg-[#587295] transition rounded-lg"
+            onClick={() => router.push("/tickets")}
+          >
             <IoTicketSharp className="text-4xl" />
             <p className="text-white text-xl font-bold">Seus Tickets</p>
           </button>

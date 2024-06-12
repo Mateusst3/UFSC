@@ -10,7 +10,6 @@ export default function DisplayTicketHome(props: {
       <section className="flex flex-row items-center justify-center h-full w-full p-3">
         <p className="text-white font-bold text-lg">{props.name}</p>
       </section>
-      
     </div>
   );
 }
