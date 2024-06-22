@@ -1,20 +1,22 @@
 import DisplayNewEvent from "@/components/displayTicket/DisplayNewEvent";
 import DisplayTicketHome from "@/components/displayTicket/DisplayTicketHome";
 import SideMenu from "@/components/menu/SideMenu";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const {data: session} = useSession()
   return (
     <>
       <main className="flex flex-row">
         <SideMenu />
         <div className="w-full h-full min-h-[80vh] flex flex-col items-start justify-start px-8 py-10 bg-gradient-to-b from-[#F5D342] via-[#587295] to-black gap-12">
           <section className="flex flex-col items-start justify-center gap-3">
-            <h4 className="text-white font-bold text-4xl">Olá, Angel</h4>
+            <h4 className="text-white font-bold text-4xl">Olá, {session?.user?.name}</h4>
             <p className="text-white font-bold text-3xl">
               Sugestões para você!
             </p>
           </section>
-          <section className="flex flex-wrap justify-center lg:justify-between w-full gap-3">
+          <section className="flex flex-wrap lg:flex-row justify-center lg:justify-evenly w-full gap-3">
             <DisplayTicketHome image="/images/foto_1.png" name="Tomorrowland" />
             <DisplayTicketHome
               image="/images/foto_4.png"
@@ -27,7 +29,7 @@ export default function Home() {
             />
           </section>
           <p className="text-white text-3xl">O que há de novo</p>
-          <section className="flex flex-wrap justify-center lg:justify-start w-full gap-6">
+          <section className="flex flex-wrap justify-center lg:justify-center w-full gap-6">
             <DisplayNewEvent
               image={"/images/image 1.png"}
               name={"Campeonato Carioca"}
