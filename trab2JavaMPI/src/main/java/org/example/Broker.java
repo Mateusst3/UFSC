@@ -9,6 +9,7 @@ import mpi.MPI;
 import mpi.Status;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.List;
 @Setter
 public class Broker {
     private String address;
-    private HashMap<String, String> receivedContent = new HashMap<>();
+    private ArrayList<HashMap<String, String>> receivedContent = new ArrayList<>();
     private HashMap<Integer,Integer> subscribers = new HashMap<>();
 
     public static Broker getBroker() throws FileNotFoundException {
@@ -40,7 +41,9 @@ public class Broker {
         String str = Arrays.toString(receivedMessage);
         str = str.substring(2, str.length() - 2);
         String[] parts = str.split("=");
-        receivedContent.put(parts[0], parts[1]);
+        HashMap<String, String> newContent = new HashMap<>();
+        newContent.put(parts[0], parts[1]);
+        receivedContent.add(newContent);
 
         System.out.println("Conteudo recebido armazeanado: " + receivedContent);
     }
@@ -53,6 +56,7 @@ public class Broker {
         String string = Arrays.toString(receivedMessage);
         var finalStr = string.substring(1, (string.length()-1));
         ArrayList<String> response = iterateFromPreviousRead(rankSource, finalStr);
+
         String[] str = new String[]{response.toString()};
 
 
@@ -65,23 +69,30 @@ public class Broker {
 
     public ArrayList<String> iterateFromPreviousRead(int rankSource, String receivedMessage) {
         int sizeBeforeRead = receivedContent.size();
+        System.out.println("SIZE BEFORE READ: " + sizeBeforeRead);
         ArrayList<String> response = new ArrayList<>();
         Integer latestIndex = subscribers.get(rankSource);
+        System.out.println("latestIndex: " + latestIndex);
         if (latestIndex != null) {
             for (int i = latestIndex; i < receivedContent.size(); i++) {
-                response.add(receivedContent.get(receivedMessage));
-                System.out.println("TENTANDO DAR GET EM "+ receivedMessage);
+                HashMap<String, String> currentMap = receivedContent.get(i);
+                if (currentMap.containsKey(receivedMessage)) {
+                    response.add(currentMap.get(receivedMessage));
+                }
+
             }
         } else {
-            updateLatestRead(rankSource, -1);
+            updateLatestRead(rankSource, 0);
             iterateFromPreviousRead(rankSource, receivedMessage);
         }
         updateLatestRead(rankSource, sizeBeforeRead);
+
         return response;
     }
 
     //TODO vai ficar adicionando na lista, era para atualizar
     public void updateLatestRead(int rankSource, int latestReadIndex) {
         subscribers.put(rankSource, latestReadIndex);
+        ArrayList<Integer> keys = new ArrayList<>;
     }
 }

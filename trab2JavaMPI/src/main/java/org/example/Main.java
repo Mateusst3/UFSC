@@ -38,7 +38,7 @@ public class Main {
                         if (status.source % 2 == 0 ) {
                             //se source par, eh produtor
                             broker.processReceive(receivedMessage);
-                        } else {
+                        } else if (status.source % 2 != 0) {
                             broker.proccessRequest(receivedMessage, status.source);
                         }
                         //broker armazena numa lista
@@ -46,7 +46,9 @@ public class Main {
                         //ao receber requisicao do consumidor, itera sobre a lista a partir da ultima mensagem lida
                         //confere se a tag do consumidor esta na lista de interesses e envia, uma a uma
                     } catch (Exception e) {
-                        System.out.println("Aqui");                    }
+                        System.out.println("Erro no broker na main");
+                        e.printStackTrace();
+                    }
 
                 }
                 //Processos pares são produtores
@@ -55,12 +57,12 @@ public class Main {
                     Thread.sleep(1000 + random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
                 }
                 //Processos impares serão consumidores
-                else if (rank % 2 != 0) {
+                else if (rank % 2 != 0 && rank != 0) {
                     subscriber.requestMessage(rank);
                     Thread.sleep(1000 + random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
                 }
 
-                System.out.println("Processo " + rank + " finalizado");
+
             }
         } catch (MPIException e) {
             e.printStackTrace();
