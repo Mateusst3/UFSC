@@ -25,8 +25,7 @@ public class Main {
             MPI.Init(args);
             int rank = MPI.COMM_WORLD.Rank();
             int size = MPI.COMM_WORLD.Size();
-            System.out.println(rank%2);
-            System.out.println("Processo " + rank + " de " + size + " iniciado");
+
 
 
             while (true) {

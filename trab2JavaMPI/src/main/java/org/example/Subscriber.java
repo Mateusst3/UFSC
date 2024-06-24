@@ -7,10 +7,7 @@ import mpi.MPI;
 import mpi.Status;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Subscriber {
     private String address;
@@ -29,21 +26,17 @@ public class Subscriber {
     }
 
     public void requestMessage(int rank){
-        System.out.println("Subscriber " + rank + " enviando requisição");
-        String[] str = new String[]{"tech"};
+        Random random = new Random();
+        String randomTag = tags.get(random.nextInt(tags.size()));
+        String[] str = new String[]{randomTag};
 
         MPI.COMM_WORLD.Send(str, 0, str.length, MPI.OBJECT, 0, 0);
+        System.out.println("Subscriber " + rank + " enviou requisição para tag " + randomTag);
 
-        boolean b = true;
-        while (b) {
-            String[] receivedMessage = new String[1];
-            Status status = MPI.COMM_WORLD.Recv(receivedMessage, 0, 1, MPI.OBJECT, 0, MPI.ANY_TAG);
-            System.out.println("Subscriber " + rank + " received message: " + Arrays.toString(receivedMessage));
-            b = (status.tag != 0); // quando for a ultima mensagem, virá com tag 2
-        }
+        String[] receivedMessage = new String[1];
+        Status status = MPI.COMM_WORLD.Recv(receivedMessage, 0, 1, MPI.OBJECT, 0, MPI.ANY_TAG);
+        System.out.println("Subscriber " + rank + " received message: " + Arrays.toString(receivedMessage));
+
     }
 
-    public void teste() {
-        System.out.println("Funcionou");
-    }
 }

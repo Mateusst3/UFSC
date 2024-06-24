@@ -32,11 +32,6 @@ public class Publisher {
         }
     }
 
-
-    public void teste() {
-        System.out.println("Publisher");
-    }
-
     public void send(int rank) {
         Random random = new Random();
         int randomIndex = random.nextInt(content.size());
@@ -44,8 +39,8 @@ public class Publisher {
             //Pega um conteudo aleatorio da lista de conteudos, passando o par assunto/mensagem
             String[] str = new String[]{content.get(randomIndex).toString()};
 
-            System.out.printf("Publisher %d Enviando mensagem %s para processo adicionar aqui depois o assunto%n", rank, Arrays.toString(str));
             MPI.COMM_WORLD.Send(str, 0, str.length, MPI.OBJECT, 0, 0);
+            System.out.println("Publisher " + rank + " enviou mensagem: " + Arrays.toString(str));
             Thread.sleep(1000 + random.nextInt(1001));
 
         } catch (InterruptedException e) {
