@@ -1,65 +1,74 @@
 package org.example;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import mpi.*;
 import runtime.daemonmanager.MPJBoot;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Map<Integer, String> interestsMp = new HashMap<>();
-        LinkedList<EntitySend> messagesList = new LinkedList<EntitySend>();
+        ArrayList<HashMap<String, String>> receivedContent = new ArrayList<>();
+        var publisher = Publisher.getPublisher();
+        var broker = Broker.getBroker();
+        var subscriber = Subscriber.getSubscriber();
+        Random random = new Random();
         try {
+            // cada processo vai passar por aqui, cada um com um rank 0,1,2
+            // rank 0 broker, rank 1 publisher, rank 2 subscriber
             MPI.Init(args);
-            int me = MPI.COMM_WORLD.Rank();
+            int rank = MPI.COMM_WORLD.Rank();
             int size = MPI.COMM_WORLD.Size();
-            boolean running = true;
-            while (running){
-                MPI.COMM_WORLD.Barrier();
-                if (me == 0) {
-                    String addInterest = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), "Você gostaria de adicionar um assunto? (true/false)");//Note: input can be null.
-                    System.out.println("Você gostaria de adicionar um assunto? (true/false)");
-                    System.out.println(addInterest);
-                    if (addInterest.equals("true")) {
-                        String interest = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), "Escolha o assunto:");
-                        String process = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), "Escolha o processo:");
-                        interestsMp.put(Integer.parseInt(process), interest);
-                    }
-                    else if (!interestsMp.isEmpty()) {
-                        System.out.println("Escolha um assunto para mandar:");
-                        interestsMp.forEach((key, value) -> System.out.println(key + ": " + value));
-                        String interest = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), "Escolha o Interesse:");
-                        String message = JOptionPane.showInputDialog(JOptionPane.getRootFrame(), "Escreva a mensagem:");
-                        messagesList.add(new EntitySend(interest, message));
-                    }
-                    if(!messagesList.isEmpty()){
-                        EntitySend firstEntity = messagesList.getFirst();
-                        interestsMp.forEach((key, value) -> {
-                            if(value.equals(firstEntity.getInterest())){
-                                System.out.println(firstEntity.getMessage());
-                                String[] str = new String[]{firstEntity.getMessage()};
-                                System.out.println("Enviando mensagem " + str.toString() + " para processo " + key);
-                                MPI.COMM_WORLD.Isend(str,0, str.length, MPI.OBJECT, key, 0);
-                            }
-                        });
-                    }
+            System.out.println(rank%2);
+            System.out.println("Processo " + rank + " de " + size + " iniciado");
+
+
+            while (true) {
+
+                if (rank == 0 ) {
+                    try {
+                        String[] receivedMessage = new String[1];
+                        Status status = MPI.COMM_WORLD.Recv(receivedMessage, 0, 1, MPI.OBJECT, MPI.ANY_SOURCE, MPI.ANY_TAG);
+
+                        if (status.source % 2 == 0 ) {
+                            //se source par, eh produtor
+                            broker.processReceive(receivedMessage);
+                        } else {
+                            broker.proccessRequest(receivedMessage, status.source);
+                        }
+                        //broker armazena numa lista
+                        //broker tem outra lista de hashmap com o rank do processo consumidor e o indice da ultima mensagem lida
+                        //ao receber requisicao do consumidor, itera sobre a lista a partir da ultima mensagem lida
+                        //confere se a tag do consumidor esta na lista de interesses e envia, uma a uma
+                    } catch (Exception e) {
+                        System.out.println("Aqui");                    }
+
+                }
+                //Processos pares são produtores
+                else if (rank % 2 == 0) {
+                    publisher.send(rank);
+                    Thread.sleep(1000 + random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
+                }
+                //Processos impares serão consumidores
+                else if (rank % 2 != 0) {
+                    subscriber.requestMessage(rank);
+                    Thread.sleep(1000 + random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
                 }
 
-                if (me != 0) {
-                    String[] getRecieveMessage = new String[]{};
-                    MPI.COMM_WORLD.Irecv(getRecieveMessage, 0, 100, MPI.CHAR, 0, 0);
-                    if(getRecieveMessage.length > 0){
-                        System.out.println("Processo " + me + " recebeu mensagem");
-                    }
-                }
-                MPI.COMM_WORLD.Barrier();
+                System.out.println("Processo " + rank + " finalizado");
             }
-
-            MPI.Finalize();
         } catch (MPIException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            MPI.Finalize(); //TODO mover para finally
         }
     }
 }

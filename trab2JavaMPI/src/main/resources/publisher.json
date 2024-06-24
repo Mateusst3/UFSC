@@ -1,0 +1,14 @@
+{
+  "address": "",
+  "brokerAddress": "",
+  "content": [
+    {"email": "Teste de envio de email"},
+    {"futebol": "figueirense"},
+    {"futebol": "bela vista 2x0"},
+    {"novela": "Maria do bairro cai da escada"},
+    {"novela": "Mario Casablanca é o vilão"},
+    {"tech": "Google lança novo serviço em COBOL"},
+    {"tech": "Vagas em COBOL disparam"},
+    {"tech": "do zero ao senior em cobol em 6 meses - clique ja!"}
+  ]
+}
