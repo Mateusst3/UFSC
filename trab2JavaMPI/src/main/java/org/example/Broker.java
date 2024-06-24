@@ -18,7 +18,7 @@ import java.util.*;
 public class Broker {
     private String address;
     private ArrayList<HashMap<String, String>> receivedContent = new ArrayList<>();
-    private HashMap<Integer,HashMap<String, Integer>> subscribers = new HashMap<>();
+    private HashMap<Integer,SubscriberRecord> subscribers = new HashMap<>();
 
     public static Broker getBroker() throws FileNotFoundException {
         Gson gson = new GsonBuilder().create();
@@ -51,10 +51,10 @@ public class Broker {
 
         if (!subscribers.containsKey(rankSource)) {
 
-            updateLatestRead(rankSource, finalStr, Integer.valueOf(0));
+            createLatestRead(rankSource, finalStr, Integer.valueOf(0));
 
-        } else if (!subscribers.get(rankSource).containsKey(finalStr)){
-            updateLatestRead(rankSource, finalStr, Integer.valueOf(0));
+        } else if (!subscribers.get(rankSource).getLatestReadBySubject().containsKey(finalStr)) {
+            createLatestRead(rankSource, finalStr, Integer.valueOf(0));
 
         }
 
@@ -74,8 +74,8 @@ public class Broker {
         int sizeBeforeRead = receivedContent.size();
         ArrayList<String> response = new ArrayList<>();
 
-        var map = subscribers.get(rankSource);
-        int latestIndex = map.get(receivedMessage).intValue();
+        var subscriberRecord = subscribers.get(rankSource);
+        int latestIndex = subscriberRecord.getLatestReadBySubject().get(receivedMessage);
         System.out.println("LAAAAAAAAAAAAAAAAAAAATEST:" + subscribers);
         for (int i = latestIndex; i < receivedContent.size(); i++) {
             HashMap<String, String> currentMap = receivedContent.get(i);
@@ -91,9 +91,16 @@ public class Broker {
     }
 
     public void updateLatestRead(Integer rankSource, String receivedMessage, Integer latestReadIndex) {
-        var map = new HashMap<String, Integer>();
-        map.put(receivedMessage, latestReadIndex);
-        subscribers.put(rankSource, map);
+
+        subscribers.get(rankSource).getLatestReadBySubject().put(receivedMessage, latestReadIndex);
+
+    }
+
+    public void createLatestRead(Integer rankSource, String receivedMessage, Integer latestReadIndex) {
+        SubscriberRecord newRecord = new SubscriberRecord();
+        subscribers.put(rankSource, newRecord);
+        subscribers.get(rankSource).getLatestReadBySubject().put(receivedMessage, latestReadIndex);
+
     }
 
 
