@@ -41,7 +41,7 @@ public class Publisher {
 
             MPI.COMM_WORLD.Send(str, 0, str.length, MPI.OBJECT, 0, 0);
             System.out.println("Publisher " + rank + " enviou mensagem: " + Arrays.toString(str));
-            Thread.sleep(10001 + random.nextInt(1001));
+            Thread.sleep(1000 + random.nextInt(1001));
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

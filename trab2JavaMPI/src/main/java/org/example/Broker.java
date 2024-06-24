@@ -52,10 +52,8 @@ public class Broker {
         if (!subscribers.containsKey(rankSource)) {
 
             createLatestRead(rankSource, finalStr, Integer.valueOf(0));
-
         } else if (!subscribers.get(rankSource).getLatestReadBySubject().containsKey(finalStr)) {
             createLatestRead(rankSource, finalStr, Integer.valueOf(0));
-
         }
 
         ArrayList<String> response = iterateFromPreviousRead(rankSource, finalStr);
@@ -64,7 +62,7 @@ public class Broker {
 
 
         MPI.COMM_WORLD.Send(str, 0, str.length, MPI.OBJECT, rankSource, 0);
-        System.out.println("Broker enviou mensagem para " + rankSource + " : " + Arrays.toString(str));
+        System.out.println("Broker enviou mensagem para " + rankSource + "." + "Offset do subscriber: " + subscribers.get(rankSource).getLatestReadBySubject());
 
     }
 
@@ -76,7 +74,6 @@ public class Broker {
 
         var subscriberRecord = subscribers.get(rankSource);
         int latestIndex = subscriberRecord.getLatestReadBySubject().get(receivedMessage);
-        System.out.println("LAAAAAAAAAAAAAAAAAAAATEST:" + subscribers);
         for (int i = latestIndex; i < receivedContent.size(); i++) {
             HashMap<String, String> currentMap = receivedContent.get(i);
             if (currentMap.containsKey(receivedMessage)) {
@@ -97,9 +94,15 @@ public class Broker {
     }
 
     public void createLatestRead(Integer rankSource, String receivedMessage, Integer latestReadIndex) {
-        SubscriberRecord newRecord = new SubscriberRecord();
-        subscribers.put(rankSource, newRecord);
-        subscribers.get(rankSource).getLatestReadBySubject().put(receivedMessage, latestReadIndex);
+
+        if (subscribers.containsKey(rankSource)) {
+            subscribers.get(rankSource).getLatestReadBySubject().put(receivedMessage, latestReadIndex);
+
+        } else {
+            SubscriberRecord newRecord = new SubscriberRecord();
+            subscribers.put(rankSource, newRecord);
+            subscribers.get(rankSource).getLatestReadBySubject().put(receivedMessage, latestReadIndex);
+        }
 
     }
 

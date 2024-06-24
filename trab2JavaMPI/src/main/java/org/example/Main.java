@@ -32,7 +32,6 @@ public class Main {
 
                 if (rank == 0 ) {
                     try {
-                        System.out.println("BROOOOOOOOOOOOOOOKER");
                         String[] receivedMessage = new String[1];
                         Status status = MPI.COMM_WORLD.Recv(receivedMessage, 0, 1, MPI.OBJECT, MPI.ANY_SOURCE, MPI.ANY_TAG);
 
@@ -43,10 +42,7 @@ public class Main {
 
                             broker.proccessRequest(receivedMessage, status.source);
                         }
-                        //broker armazena numa lista
-                        //broker tem outra lista de hashmap com o rank do processo consumidor e o indice da ultima mensagem lida
-                        //ao receber requisicao do consumidor, itera sobre a lista a partir da ultima mensagem lida
-                        //confere se a tag do consumidor esta na lista de interesses e envia, uma a uma
+
                     } catch (Exception e) {
                         System.out.println("Erro no broker na main");
                         e.printStackTrace();
