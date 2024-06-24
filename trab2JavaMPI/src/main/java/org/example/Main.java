@@ -32,6 +32,7 @@ public class Main {
 
                 if (rank == 0 ) {
                     try {
+                        System.out.println("BROOOOOOOOOOOOOOOKER");
                         String[] receivedMessage = new String[1];
                         Status status = MPI.COMM_WORLD.Recv(receivedMessage, 0, 1, MPI.OBJECT, MPI.ANY_SOURCE, MPI.ANY_TAG);
 
@@ -39,6 +40,7 @@ public class Main {
                             //se source par, eh produtor
                             broker.processReceive(receivedMessage);
                         } else if (status.source % 2 != 0) {
+
                             broker.proccessRequest(receivedMessage, status.source);
                         }
                         //broker armazena numa lista
@@ -59,7 +61,7 @@ public class Main {
                 //Processos impares serão consumidores
                 else if (rank % 2 != 0 && rank != 0) {
                     subscriber.requestMessage(rank);
-                    Thread.sleep(1000 + random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
+                    Thread.sleep(1000+ random.nextInt(1001)); // seguindo descrição do trabalho: requsicao aleatoriamenta a cada 1 a 2 segundos
                 }
 
 
@@ -69,7 +71,7 @@ public class Main {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            MPI.Finalize(); //TODO mover para finally
+            MPI.Finalize();
         }
     }
 }

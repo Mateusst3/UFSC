@@ -10,10 +10,7 @@ import mpi.Status;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Data
 @Getter
@@ -21,7 +18,7 @@ import java.util.List;
 public class Broker {
     private String address;
     private ArrayList<HashMap<String, String>> receivedContent = new ArrayList<>();
-    private HashMap<Integer,Integer> subscribers = new HashMap<>();
+    private HashMap<Integer,HashMap<String, Integer>> subscribers = new HashMap<>();
 
     public static Broker getBroker() throws FileNotFoundException {
         Gson gson = new GsonBuilder().create();
@@ -48,13 +45,19 @@ public class Broker {
         System.out.println("Conteudo recebido armazeanado: " + receivedContent);
     }
 
-    public void proccessRequest(String[] receivedMessage, int rankSource) {
-
-        HashMap<String, String> myMap = new HashMap<>();
-        myMap.put("key1", "value1");
-        myMap.put("key2", "value2");
+    public void proccessRequest(String[] receivedMessage, int rankSource) throws InterruptedException {
         String string = Arrays.toString(receivedMessage);
-        var finalStr = string.substring(1, (string.length()-1));
+        String finalStr = new String(string.substring(1, (string.length()-1)));
+
+        if (!subscribers.containsKey(rankSource)) {
+
+            updateLatestRead(rankSource, finalStr, Integer.valueOf(0));
+
+        } else if (!subscribers.get(rankSource).containsKey(finalStr)){
+            updateLatestRead(rankSource, finalStr, Integer.valueOf(0));
+
+        }
+
         ArrayList<String> response = iterateFromPreviousRead(rankSource, finalStr);
 
         String[] str = new String[]{response.toString()};
@@ -69,30 +72,29 @@ public class Broker {
 
     public ArrayList<String> iterateFromPreviousRead(int rankSource, String receivedMessage) {
         int sizeBeforeRead = receivedContent.size();
-        System.out.println("SIZE BEFORE READ: " + sizeBeforeRead);
         ArrayList<String> response = new ArrayList<>();
-        Integer latestIndex = subscribers.get(rankSource);
-        System.out.println("latestIndex: " + latestIndex);
-        if (latestIndex != null) {
-            for (int i = latestIndex; i < receivedContent.size(); i++) {
-                HashMap<String, String> currentMap = receivedContent.get(i);
-                if (currentMap.containsKey(receivedMessage)) {
-                    response.add(currentMap.get(receivedMessage));
-                }
 
+        var map = subscribers.get(rankSource);
+        int latestIndex = map.get(receivedMessage).intValue();
+        System.out.println("LAAAAAAAAAAAAAAAAAAAATEST:" + subscribers);
+        for (int i = latestIndex; i < receivedContent.size(); i++) {
+            HashMap<String, String> currentMap = receivedContent.get(i);
+            if (currentMap.containsKey(receivedMessage)) {
+                response.add(currentMap.get(receivedMessage));
             }
-        } else {
-            updateLatestRead(rankSource, 0);
-            iterateFromPreviousRead(rankSource, receivedMessage);
+
         }
-        updateLatestRead(rankSource, sizeBeforeRead);
+
+        updateLatestRead(rankSource, receivedMessage, sizeBeforeRead);
 
         return response;
     }
 
-    //TODO vai ficar adicionando na lista, era para atualizar
-    public void updateLatestRead(int rankSource, int latestReadIndex) {
-        subscribers.put(rankSource, latestReadIndex);
-        ArrayList<Integer> keys = new ArrayList<>;
+    public void updateLatestRead(Integer rankSource, String receivedMessage, Integer latestReadIndex) {
+        var map = new HashMap<String, Integer>();
+        map.put(receivedMessage, latestReadIndex);
+        subscribers.put(rankSource, map);
     }
+
+
 }
